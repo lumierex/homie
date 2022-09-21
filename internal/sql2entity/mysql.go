@@ -4,8 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
-
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -54,8 +52,9 @@ func (m *DBModel) Connect() error {
 // 获取数据库下的某张表的元信息
 func (m *DBModel) Columns(dbName, tableName string) ([]*TableColumn, error) {
 	// table_schema 数据库名称 https://blog.csdn.net/qq_42778001/article/details/120035616
-	query := "SELECT " + "COLUMN_NAME, DATA_TYPE, COLUMN_KEY, IS_NULLABLE, COLUMN_TYPE, COLUMN_COMMENT " +
-		"FORM COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME= ? "
+	query := "SELECT COLUMN_NAME, DATA_TYPE, COLUMN_KEY, IS_NULLABLE, COLUMN_TYPE, COLUMN_COMMENT " +
+		"FROM COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME= ? "
+
 	rows, err := m.Engine.Query(query, dbName, tableName)
 	if err != nil {
 		return nil, err
@@ -80,7 +79,6 @@ func (m *DBModel) Columns(dbName, tableName string) ([]*TableColumn, error) {
 		)
 		columns = append(columns, &column)
 	}
-	log.Println(columns)
 	return columns, nil
 
 }

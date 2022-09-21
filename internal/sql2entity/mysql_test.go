@@ -2,6 +2,7 @@ package sql2entity
 
 import (
 	"database/sql"
+	"log"
 	"testing"
 )
 
@@ -20,11 +21,11 @@ func TestDBModel_Connect(t *testing.T) {
 			fields: fields{
 				Engine: &sql.DB{},
 				Info: &DBInfo{
-					Type: "mysql",
+					Type:     "mysql",
 					Username: "root",
 					Password: "12345678",
-					Host: "localhost",
-					Charset: "utf8mb4",
+					Host:     "localhost",
+					Charset:  "utf8mb4",
 				},
 			},
 		},
@@ -37,6 +38,13 @@ func TestDBModel_Connect(t *testing.T) {
 			}
 			if err := m.Connect(); (err != nil) != tt.wantErr {
 				t.Errorf("DBModel.Connect() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			tableColumns, err := m.Columns("mtl", "user")
+			if err != nil {
+				t.Errorf("DBModel.Columns() error = %v", err)
+			}
+			for _, column := range tableColumns {
+				log.Println(*column)
 			}
 		})
 	}
