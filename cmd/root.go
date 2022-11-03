@@ -1,14 +1,12 @@
-package cmd 
+package cmd
 
 import "github.com/spf13/cobra"
 
-
 var RootCmd = &cobra.Command{
-	Use: "",
+	Use:   "",
 	Short: "",
-	Long: "",
+	Long:  "",
 }
-
 
 func Execute() error {
 	return RootCmd.Execute()
@@ -16,4 +14,5 @@ func Execute() error {
 
 func init() {
 	RootCmd.AddCommand(&EnvCmd)
+	RootCmd.AddCommand(&QRCodeCmd)
 }
